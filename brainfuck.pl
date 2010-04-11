@@ -92,6 +92,9 @@ interpret([']'|RInstr0],LInstr0,LData,[H|RData]) :-
     ;  jump_bwd(LInstr0,[']'|RInstr0],0,LInstr,RInstr)
     ),
     interpret(RInstr,LInstr,LData,[H|RData]).
+interpret([#|RInstr],LInstr,LData,RData) :-
+    debug_dump(RData,LData),
+    interpret(RInstr,[#|LInstr],LData,RData).
 
 jump_fwd([']'|RInstr],LInstr,0,RInstr,[']'|LInstr]) :- !.
 jump_fwd([']'|RInstr0],LInstr0,N,RInstr,LInstr) :-
@@ -115,3 +118,17 @@ jump_bwd([']'|LInstr0],RInstr0,N,LInstr,RInstr) :-
     jump_bwd(LInstr0,[']'|RInstr0],NNew,LInstr,RInstr).
 jump_bwd([H|LInstr0],RInstr0,N,LInstr,RInstr) :-
     jump_bwd(LInstr0,[H|RInstr0],N,LInstr,RInstr).
+
+%%%%%%%%%%%%%
+% debugging %
+%%%%%%%%%%%%%
+
+%% dump the values of the first ten memory cells
+debug_dump(RData,LData) :-
+    lists:append(LData,RData,Data),
+    list_first_n(Data,10,First),
+    format(user_error,"~q~n",[First]).
+
+list_first_n(List,N,Prefix) :-
+    length(Prefix,N),
+    lists:prefix(Prefix,List).
