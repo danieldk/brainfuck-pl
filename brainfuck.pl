@@ -25,7 +25,7 @@ bfs(SourceFile) :-
 	bfi(Instructions).
 
 bfi(Instructions) :-
-    make_data(100,RData),
+    make_data(30000,RData),
     interpret(Instructions,[],[],RData).
 
 make_data(0,[]) :- !.
