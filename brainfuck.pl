@@ -28,7 +28,7 @@ bfs(SourceFile) :-
 
 bfi(Instructions) :-
     make_data(30000,RData),
-    interpret(Instructions,[],[],RData).
+    interpret(Instructions,[],[],RData,_).
 
 make_data(Len,List) :-
     length(List,Len),
@@ -68,38 +68,40 @@ is_instruction(Char) :-
 % Interpreter %
 %%%%%%%%%%%%%%%
 
-interpret([],_,_,_).
-interpret([>|RInstr],LInstr,LData,[H|RData]) :-
-    interpret(RInstr,[>|LInstr],[H|LData],RData).
-interpret([<|RInstr],LInstr,[H|LData],RData) :-
-    interpret(RInstr,[<|LInstr],LData,[H|RData]).
-interpret([+|RInstr],LInstr,LData,[H|RData]) :-
+interpret([],_,LData0,RData,Data) :-
+    lists:reverse(LData0,LData),
+    lists:append(LData,RData,Data).
+interpret([>|RInstr],LInstr,LData,[H|RData],Data) :-
+    interpret(RInstr,[>|LInstr],[H|LData],RData,Data).
+interpret([<|RInstr],LInstr,[H|LData],RData,Data) :-
+    interpret(RInstr,[<|LInstr],LData,[H|RData],Data).
+interpret([+|RInstr],LInstr,LData,[H|RData],Data) :-
     NewH is H + 1,
-    interpret(RInstr,[+|LInstr],LData,[NewH|RData]).
-interpret([-|RInstr],LInstr,LData,[H|RData]) :-
+    interpret(RInstr,[+|LInstr],LData,[NewH|RData],Data).
+interpret([-|RInstr],LInstr,LData,[H|RData],Data) :-
     NewH is H - 1,
-    interpret(RInstr,[-|LInstr],LData,[NewH|RData]).
-interpret([.|RInstr],LInstr,LData,[H|RData]) :-
+    interpret(RInstr,[-|LInstr],LData,[NewH|RData],Data).
+interpret([.|RInstr],LInstr,LData,[H|RData],Data) :-
     format("~c",[H]),
-    interpret(RInstr,[.|LInstr],LData,[H|RData]).
-interpret([','|RInstr],LInstr,LData,[_|RData]) :-
+    interpret(RInstr,[.|LInstr],LData,[H|RData],Data).
+interpret([','|RInstr],LInstr,LData,[_|RData],Data) :-
     read_line(user_input,[Byte]),
-    interpret(RInstr,[','|LInstr],LData,[Byte|RData]).
-interpret(['['|RInstr0],LInstr0,LData,[H|RData]) :-
+    interpret(RInstr,[','|LInstr],LData,[Byte|RData],Data).
+interpret(['['|RInstr0],LInstr0,LData,[H|RData],Data) :-
     (  H == 0
     -> jump_fwd(RInstr0,['['|LInstr0],0,RInstr,LInstr)
     ;  RInstr = RInstr0, LInstr = ['['|LInstr0]
     ),
-    interpret(RInstr,LInstr,LData,[H|RData]).
-interpret([']'|RInstr0],LInstr0,LData,[H|RData]) :-
+    interpret(RInstr,LInstr,LData,[H|RData],Data).
+interpret([']'|RInstr0],LInstr0,LData,[H|RData],Data) :-
     (  H == 0
     -> RInstr = RInstr0, LInstr = [']'|LInstr0]
     ;  jump_bwd(LInstr0,[']'|RInstr0],0,LInstr,RInstr)
     ),
-    interpret(RInstr,LInstr,LData,[H|RData]).
-interpret([#|RInstr],LInstr,LData,RData) :-
+    interpret(RInstr,LInstr,LData,[H|RData],Data).
+interpret([#|RInstr],LInstr,LData,RData,Data) :-
     debug_dump(RData,LData),
-    interpret(RInstr,[#|LInstr],LData,RData).
+    interpret(RInstr,[#|LInstr],LData,RData,Data).
 
 jump_fwd([']'|RInstr],LInstr,0,RInstr,[']'|LInstr]) :- !.
 jump_fwd([']'|RInstr0],LInstr0,N,RInstr,LInstr) :-
