@@ -129,7 +129,8 @@ jump_bwd([H|LInstr0],RInstr0,N,LInstr,RInstr) :-
 %%%%%%%%%%%%%
 
 %% dump the values of the first ten memory cells
-debug_dump(RData,LData) :-
+debug_dump(RData,LData0) :-
+    lists:reverse(LData0,LData),
     lists:append(LData,RData,Data),
     list_first_n(Data,10,First),
     format(user_error,"~q~n",[First]).
