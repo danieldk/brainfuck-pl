@@ -1,4 +1,4 @@
-%% dbfi.pl
+%% brainfuck.pl
 
 %% An interpreter for the esoteric brainf*ck programming language.
 %%
@@ -17,6 +17,8 @@
 %%
 %% You should have received a copy of the GNU General Public License
 %% along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+:- module(brainfuck,[bfs/1,bfi/1]).
 
 :- use_module(library(lists)).
 
