@@ -30,10 +30,13 @@ bfi(Instructions) :-
     make_data(30000,RData),
     interpret(Instructions,[],[],RData).
 
-make_data(0,[]) :- !.
-make_data(N,[0|Data]) :-
-    NNew is N - 1,
-    make_data(NNew,Data).
+make_data(Len,List) :-
+    length(List,Len),
+    initialize_data(List).
+
+initialize_data([]).
+initialize_data([0|T]) :-
+    initialize_data(T).
 
 %%%%%%%%%%%%%%%
 % read source %
