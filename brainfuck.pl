@@ -23,8 +23,8 @@
 :- use_module(library(lists)).
 
 bfs(SourceFile) :-
-	read_source_file(SourceFile,Instructions),
-	bfi(Instructions).
+    read_source_file(SourceFile,Instructions),
+    bfi(Instructions).
 
 bfi(Instructions) :-
     make_data(30000,RData),
@@ -43,26 +43,26 @@ initialize_data([0|T]) :-
 %%%%%%%%%%%%%%%
 
 read_source_file(SourceFile,Instructions) :-
-	open(SourceFile,read,SourceStream),
-	read_instruction_list(SourceStream,Instructions),
-	close(SourceStream).
+    open(SourceFile,read,SourceStream),
+    read_instruction_list(SourceStream,Instructions),
+    close(SourceStream).
 
 read_instruction_list(SourceStream,Instructions) :-
-	read_instruction_list(SourceStream,[],Instructions).
+    read_instruction_list(SourceStream,[],Instructions).
 
 read_instruction_list(SourceStream,Accumulator,Instructions) :-
-	get_char(SourceStream,Char),
-	(	Char \== end_of_file
-	->	(	is_instruction(Char)
-		->	append(Accumulator,[Char],Accumulator0),
-			read_instruction_list(SourceStream,Accumulator0,Instructions)
-		;	read_instruction_list(SourceStream,Accumulator,Instructions)
-		)
-	;	Instructions = Accumulator
-	).
+    get_char(SourceStream,Char),
+    (	Char \== end_of_file
+    ->	(	is_instruction(Char)
+	->	append(Accumulator,[Char],Accumulator0),
+	    read_instruction_list(SourceStream,Accumulator0,Instructions)
+	;	read_instruction_list(SourceStream,Accumulator,Instructions)
+	)
+    ;	Instructions = Accumulator
+    ).
 
 is_instruction(Char) :-
-	memberchk(Char,['>','<','+','-','.',',','[',']','#']).
+    memberchk(Char,['>','<','+','-','.',',','[',']','#']).
 
 %%%%%%%%%%%%%%%
 % Interpreter %
