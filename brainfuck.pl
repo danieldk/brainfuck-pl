@@ -109,6 +109,7 @@ jump_fwd([']'|RInstr0],LInstr0,N,RInstr,LInstr) :-
     NNew is N - 1,
     jump_fwd(RInstr0,[']'|LInstr0],NNew,RInstr,LInstr).
 jump_fwd(['['|RInstr0],LInstr0,N,RInstr,LInstr) :-
+    !,
     NNew is N + 1,
     jump_fwd(RInstr0,['['|LInstr0],NNew,RInstr,LInstr).
 jump_fwd([H|RInstr0],LInstr0,N,RInstr,LInstr) :-
