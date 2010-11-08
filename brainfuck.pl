@@ -3,7 +3,7 @@
 %% An interpreter for the esoteric brainf*ck programming language.
 %%
 %% Copyright (c) 2010 Daniel de Kok <me@danieldk.eu>
-%% Copyright (c) 2010 Harm Brouwer <harm.brouwer@rug.nl>
+%% Copyright (c) 2010 Harm Brouwer <me@hbrouwer.eu>
 %%
 %% This program is free software: you can redistribute it and/or modify
 %% it under the terms of the GNU General Public License as published by

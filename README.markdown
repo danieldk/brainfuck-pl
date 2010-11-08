@@ -19,4 +19,4 @@ Authors
 -------
 
 * Daniel de Kok &lt;me@danieldk.eu&gt;
-* Harm Brouwer &lt;harm.brouwer@rug.nl&gt;
+* Harm Brouwer &lt;me@hbouwer.eu&gt;
